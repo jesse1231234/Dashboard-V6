@@ -418,12 +418,12 @@ if st.session_state.get("results"):
         aoai_endpoint = st.secrets.get("AZURE_OPENAI_ENDPOINT", os.getenv("AZURE_OPENAI_ENDPOINT", ""))
 
             # ---- CHECK SECRETS FOR FOUNDY / OPENAI CLIENT ----
-    oai_key = st.secrets.get("OPENAI_API_KEY", os.getenv("OPENAI_API_KEY", ""))
-    oai_base_url = st.secrets.get("OPENAI_BASE_URL", os.getenv("OPENAI_BASE_URL", ""))
+    oai_key = st.secrets.get("AZURE_OPENAI_API_KEY", os.getenv("AZURE_OPENAI_API_KEYY", ""))
+    oai_base_url = st.secrets.get("AZURE_OPENAI_ENDPOINT", os.getenv("AZURE_OPENAI_ENDPOINT", ""))
 
     if not oai_key or not oai_base_url:
         st.warning(
-            "Add OPENAI_BASE_URL and OPENAI_API_KEY to Streamlit secrets "
+            "Add AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_API_KEY to Streamlit secrets "
             "to enable AI analysis."
         )
     else:
@@ -442,4 +442,5 @@ if st.session_state.get("results"):
                     st.markdown(text)
                 except Exception as e:
                     st.error(f"AI analysis failed: {e}")
+
 
