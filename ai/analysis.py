@@ -4,7 +4,7 @@ from typing import Optional
 import os
 import pandas as pd
 import streamlit as st
-from openai import OpenAI
+from openai import AzureOpenAI
 
 SYSTEM_PROMPT = """You are an academic learning analytics assistant.
 Write a concise, plain-English analysis for instructors teaching online asychronous courses.
@@ -16,34 +16,40 @@ Rules:
 - Keep it under ~500 words unless asked for more.
 """
 
-def _get_ai_client() -> OpenAI:
+def _get_ai_client() -> AzureOpenAI:
     """
-    Create an OpenAI client for an Azure AI Foundry / Project endpoint.
+    Create an Azure OpenAI client that talks directly to your Azure OpenAI resource.
 
     Expected secrets/env:
-      - OPENAI_BASE_URL  e.g. "https://<something>.services.ai.azure.com/openai/v1"
-      - OPENAI_API_KEY   the key from the Foundry 'Use model' / 'Connections' blade
+      - AZURE_OPENAI_ENDPOINT   e.g. "https://my-openai-resource.openai.azure.com"
+      - AZURE_OPENAI_API_KEY    key from the Azure OpenAI resource
+      - AZURE_OPENAI_API_VERSION (optional, default set below)
     """
-    base_url = (
-        st.secrets.get("OPENAI_BASE_URL", None)
-        or os.getenv("OPENAI_BASE_URL")
+    endpoint = (
+        st.secrets.get("AZURE_OPENAI_ENDPOINT", None)
+        or os.getenv("AZURE_OPENAI_ENDPOINT")
     )
     api_key = (
-        st.secrets.get("OPENAI_API_KEY", None)
-        or os.getenv("OPENAI_API_KEY")
+        st.secrets.get("AZURE_OPENAI_API_KEY", None)
+        or os.getenv("AZURE_OPENAI_API_KEY")
+    )
+    api_version = (
+        st.secrets.get("AZURE_OPENAI_API_VERSION", None)
+        or os.getenv("AZURE_OPENAI_API_VERSION")
+        or "2024-02-15-preview"   # or whatever version your resource uses
     )
 
-    if not base_url or not api_key:
+    if not endpoint or not api_key:
         raise RuntimeError(
-            "OpenAI config missing. "
-            "Set OPENAI_BASE_URL and OPENAI_API_KEY in Streamlit secrets or env."
+            "Missing Azure OpenAI configuration. "
+            "Set AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_API_KEY "
+            "in Streamlit secrets or environment variables."
         )
 
-    # Foundry guidance: use OpenAI client with base_url pointing at the
-    # Azure AI / OpenAI endpoint that already includes '/openai/v1'. :contentReference[oaicite:1]{index=1}
-    return OpenAI(
-        base_url=base_url,
+    return AzureOpenAI(
         api_key=api_key,
+        azure_endpoint=endpoint,
+        api_version=api_version,
     )
 
 
@@ -105,12 +111,11 @@ Instructions:
 
     client = _get_ai_client()
 
-    # Model ID to pass to the Foundry/OpenAI endpoint.
-    # You can override via the `model` argument, but we also support a secret.
-    model_name = (
-        st.secrets.get("OPENAI_MODEL", None)
-        or os.getenv("OPENAI_MODEL")
-        or model  # fallback to the function arg default
+    # Deployment name in your Azure OpenAI resource, e.g. "gpt-4o-prod"
+    deployment_name = (
+        st.secrets.get("AZURE_OPENAI_DEPLOYMENT", None)
+        or os.getenv("AZURE_OPENAI_DEPLOYMENT")
+        or model  # fall back to the function arg if you want
     )
 
     try:
