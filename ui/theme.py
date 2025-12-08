@@ -14,10 +14,10 @@ def apply_theme(
     page_bg = "#f3f4f6"          # light gray background
     surface_bg = "#ffffff"       # cards / panels / sidebar
     subtle_bg = "#cdd1ce"        # soft blue for callouts / hovers
-    border_color = "rgba(15,23,42,.12)"   # light border
+    border_color = "#000000"   # light border
     muted_color = "#393e45"      # gray-600 for labels / muted text
     input_bg = "#ffffff"         # white inputs
-    input_border = "rgba(15,23,42,.18)"
+    input_border = "#000000"
     input_focus = "rgba(59,130,246,.28)"  # blue focus ring
 
     st.markdown(f"""
