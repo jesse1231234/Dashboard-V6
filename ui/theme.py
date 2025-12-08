@@ -52,7 +52,7 @@ def apply_theme(
       /* Sidebar */
       section[data-testid="stSidebar"] > div {{
         background: {surface_bg};
-        border-right: 1px solid {border_color};
+        border-right: 2px solid {border_color};
         box-shadow: inset -1px 0 0 rgba(15,23,42,.06);
       }}
 
@@ -102,7 +102,7 @@ def apply_theme(
       .stNumberInput > div > div > input,
       .stSelectbox > div > div > select {{
         border-radius: var(--radius);
-        border: 1px solid {input_border};
+        border: 2px solid {input_border};
         background: {input_bg};
         color: #0f172a;
         padding: 0.55rem 0.75rem;
@@ -126,13 +126,13 @@ def apply_theme(
       .stFileUploader > div {{
         border-radius: calc(var(--radius) + 4px);
         background: {surface_bg};
-        border: 1px dashed {border_color};
+        border: 2px dashed {border_color};
       }}
 
       /* Metrics as cards */
       div[data-testid="stMetric"] {{
         background: {surface_bg};
-        border: 1px solid {border_color};
+        border: 2px solid {border_color};
         border-radius: var(--radius);
         padding: 14px 16px;
         box-shadow: var(--card-shadow);
@@ -153,7 +153,7 @@ def apply_theme(
       button[role="tab"] {{
         border-radius: 999px !important;
         padding: 6px 14px !important;
-        border: 1px solid {border_color} !important;
+        border: 2px solid {border_color} !important;
         background: {surface_bg} !important;
         color: #0f172a !important;
         box-shadow: inset 0 -1px 0 rgba(15,23,42,.04);
@@ -167,7 +167,7 @@ def apply_theme(
 
       /* DataFrames */
       [data-testid="stDataFrame"] thead tr th {{
-        border-bottom: 1px solid {border_color} !important;
+        border-bottom: 2px solid {border_color} !important;
         font-weight: 600;
       }}
       [data-testid="stDataFrame"] tbody tr:hover td {{
@@ -179,7 +179,7 @@ def apply_theme(
       .surface {{
         background: {surface_bg};
         border-radius: calc(var(--radius) + 2px);
-        border: 1px solid {border_color};
+        border: 2px solid {border_color};
         box-shadow: var(--card-shadow);
         padding: 1.6rem 1.4rem;
         margin-bottom: 1.2rem;
@@ -187,7 +187,7 @@ def apply_theme(
 
       .callout {{
         border-radius: calc(var(--radius) + 2px);
-        border: 1px solid {border_color};
+        border: 2px solid {border_color};
         background: {subtle_bg};
         padding: 0.95rem 1.1rem;
         display: flex;
@@ -211,7 +211,7 @@ def apply_theme(
         padding: 1.2rem 1.4rem;
         border-radius: calc(var(--radius) + 4px);
         background: {surface_bg};
-        border: 1px solid {border_color};
+        border: 2px solid {border_color};
         box-shadow: var(--card-shadow);
         margin-bottom: 1.2rem;
       }}
@@ -241,7 +241,7 @@ def apply_theme(
 
       .stDownloadButton button {{
         border-radius: var(--radius);
-        border: 1px solid {border_color};
+        border: 2px solid {border_color};
         background: {surface_bg};
         padding: 0.55rem 0.9rem;
         transition: all .18s ease;
@@ -268,7 +268,7 @@ def hero(title: str, subtitle: str | None = None, emoji: str = "📊"):
     st.markdown(f"""
     <div style="
       background: linear-gradient(135deg, rgba(59,130,246,.10), rgba(129,140,248,.05));
-      border: 1px solid rgba(59,130,246,.18);
+      border: 2px solid rgba(59,130,246,.18);
       border-radius: var(--radius);
       padding: 18px 18px 16px 18px;
       box-shadow: var(--card-shadow);
