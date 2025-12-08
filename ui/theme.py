@@ -4,37 +4,22 @@ import streamlit as st
 
 def apply_theme(
     *,
-    brand="#3B82F6",          # primary accent (indigo-500)
-    radius="12px",            # global corner radius
-    card_shadow="0 20px 45px rgba(15,23,42,.18)",
-    compact_tables=True,      # slightly denser tables
+    brand: str = "#3B82F6",      # primary accent (blue-500)
+    radius: str = "12px",        # global corner radius
+    card_shadow: str = "0 12px 30px rgba(15,23,42,.10)",
+    compact_tables: bool = True, # slightly denser tables
 ):
-    """Inject CSS for a cohesive, modern visual style."""
-    base = st.get_option("theme.base") or "light"
-    is_dark = base == "dark"
+    """Inject CSS for a clean, simple light theme."""
+    # Fixed light mode palette
+    page_bg = "#f3f4f6"          # light gray background
+    surface_bg = "#ffffff"       # cards / panels / sidebar
+    subtle_bg = "#e5edff"        # soft blue for callouts / hovers
+    border_color = "rgba(15,23,42,.12)"   # light border
+    muted_color = "#4b5563"      # gray-600 for labels / muted text
+    input_bg = "#ffffff"         # white inputs
+    input_border = "rgba(15,23,42,.18)"
+    input_focus = "rgba(59,130,246,.28)"  # blue focus ring
 
-    surface_bg = "#111827" if is_dark else "#ffffff"
-    subtle_bg = "rgba(148,163,184,.18)" if is_dark else "rgba(148,163,184,.12)"
-    border_color = "rgba(255,255,255,.14)" if is_dark else "rgba(15,23,42,.08)"
-    muted_color = "rgba(226,232,240,.85)" if is_dark else "rgba(71,85,105,.85)"
-    if is_dark:
-        gradient_layers = (
-            "radial-gradient(circle at 20% -10%, rgba(59,130,246,.45), transparent 55%),",
-            " radial-gradient(circle at 80% -20%, rgba(14,165,233,.4), transparent 60%),",
-            " linear-gradient(180deg, #0f172a 0%, #111827 100%)",
-        )
-    else:
-        gradient_layers = (
-            "radial-gradient(circle at 20% -10%, rgba(79,70,229,.12), transparent 55%),",
-            " radial-gradient(circle at 80% -20%, rgba(14,165,233,.12), transparent 60%),",
-            " linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%)",
-        )
-    page_gradient = "".join(gradient_layers)
-
-    input_bg = "rgba(15,23,42,.55)" if is_dark else "rgba(255,255,255,.9)"
-    input_focus = "rgba(59,130,246,.45)" if is_dark else "rgba(59,130,246,.25)"
-
-    # Google Font (Inter) + CSS variables
     st.markdown(f"""
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -49,7 +34,7 @@ def apply_theme(
         font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        background: {page_gradient};
+        background: {page_bg};
       }}
 
       section.main > div.block-container {{
@@ -68,10 +53,11 @@ def apply_theme(
       section[data-testid="stSidebar"] > div {{
         background: {surface_bg};
         border-right: 1px solid {border_color};
-        box-shadow: inset -1px 0 0 rgba(15,23,42,.25);
+        box-shadow: inset -1px 0 0 rgba(15,23,42,.06);
       }}
 
-      section[data-testid="stSidebar"] span, section[data-testid="stSidebar"] label {{
+      section[data-testid="stSidebar"] span,
+      section[data-testid="stSidebar"] label {{
         color: {muted_color};
       }}
 
@@ -82,15 +68,18 @@ def apply_theme(
         font-weight: 600;
         border: 1px solid {border_color};
         background: {surface_bg};
-        color: inherit;
+        color: #0f172a;
         transition: all .18s ease;
-        box-shadow: 0 10px 25px rgba(15,23,42,.08);
+        box-shadow: 0 10px 25px rgba(15,23,42,.06);
       }}
       .stButton > button:hover {{
         transform: translateY(-1px);
-        box-shadow: 0 18px 35px rgba(15,23,42,.16);
+        box-shadow: 0 18px 35px rgba(15,23,42,.12);
       }}
-      .stButton > button:focus {{ outline: none; box-shadow: 0 0 0 3px {input_focus}; }}
+      .stButton > button:focus {{
+        outline: none;
+        box-shadow: 0 0 0 3px {input_focus};
+      }}
 
       .stButton > button[kind="primary"] {{
         background: linear-gradient(135deg, var(--brand), #6366f1) !important;
@@ -98,27 +87,32 @@ def apply_theme(
         border: none !important;
       }}
 
-      /* Inputs */
+      /* Inputs (clear borders + visible focus) */
       .stTextInput > div > div > input,
       .stTextArea textarea,
       .stNumberInput > div > div > input,
       .stSelectbox > div > div > select {{
         border-radius: var(--radius);
-        border: 1px solid {border_color};
+        border: 1px solid {input_border};
         background: {input_bg};
-        color: inherit;
+        color: #0f172a;
         padding: 0.55rem 0.75rem;
-        transition: border .18s ease, box-shadow .18s ease;
+        transition: border .18s ease, box-shadow .18s ease, background .18s ease;
       }}
+
       .stTextInput > div > div > input:focus,
       .stTextArea textarea:focus,
       .stNumberInput > div > div > input:focus,
       .stSelectbox > div > div > select:focus {{
         border-color: var(--brand);
         box-shadow: 0 0 0 3px {input_focus};
+        background: #ffffff;
       }}
 
-      label {{ font-weight: 500; color: {muted_color}; }}
+      label {{
+        font-weight: 500;
+        color: {muted_color};
+      }}
 
       .stFileUploader > div {{
         border-radius: calc(var(--radius) + 4px);
@@ -127,15 +121,20 @@ def apply_theme(
       }}
 
       /* Metrics as cards */
-      div[data-testid="stMetric"]{{
+      div[data-testid="stMetric"] {{
         background: {surface_bg};
         border: 1px solid {border_color};
         border-radius: var(--radius);
         padding: 14px 16px;
         box-shadow: var(--card-shadow);
       }}
-      div[data-testid="stMetric"] label {{ opacity: .75; font-size: .9rem; }}
-      div[data-testid="stMetric"] [data-testid="stMetricValue"]{{ font-weight: 700; }}
+      div[data-testid="stMetric"] label {{
+        opacity: .8;
+        font-size: .9rem;
+      }}
+      div[data-testid="stMetric"] [data-testid="stMetricValue"] {{
+        font-weight: 700;
+      }}
 
       /* Tabs as pills */
       div[role="tablist"] {{
@@ -147,14 +146,14 @@ def apply_theme(
         padding: 6px 14px !important;
         border: 1px solid {border_color} !important;
         background: {surface_bg} !important;
-        color: inherit !important;
-        box-shadow: inset 0 -1px 0 rgba(15,23,42,.08);
+        color: #0f172a !important;
+        box-shadow: inset 0 -1px 0 rgba(15,23,42,.04);
       }}
       button[aria-selected="true"][role="tab"] {{
-        color: {"#111827" if is_dark else "white"} !important;
+        color: white !important;
         background: linear-gradient(135deg, var(--brand), #6366f1) !important;
         border-color: transparent !important;
-        box-shadow: 0 12px 20px rgba(99,102,241,.22);
+        box-shadow: 0 12px 20px rgba(99,102,241,.18);
       }}
 
       /* DataFrames */
@@ -175,7 +174,6 @@ def apply_theme(
         box-shadow: var(--card-shadow);
         padding: 1.6rem 1.4rem;
         margin-bottom: 1.2rem;
-        backdrop-filter: blur(12px);
       }}
 
       .callout {{
@@ -186,15 +184,15 @@ def apply_theme(
         display: flex;
         gap: 0.85rem;
         align-items: flex-start;
-        color: inherit;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+        color: #0f172a;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.4);
       }}
       .callout__icon {{
         font-size: 1.25rem;
         line-height: 1.6rem;
       }}
       .callout__body {{
-        opacity: .85;
+        opacity: .9;
       }}
 
       .step-header {{
@@ -228,7 +226,9 @@ def apply_theme(
         font-size: .92rem;
       }}
 
-      .legendtop {{ margin-bottom: 6px; }}
+      .legendtop {{
+        margin-bottom: 6px;
+      }}
 
       .stDownloadButton button {{
         border-radius: var(--radius);
@@ -246,15 +246,19 @@ def apply_theme(
         border-radius: calc(var(--radius) + 2px);
       }}
 
-      .stDivider {{ opacity: .85; margin: 2rem 0; }}
+      .stDivider {{
+        opacity: .85;
+        margin: 2rem 0;
+      }}
     </style>
     """, unsafe_allow_html=True)
+
 
 def hero(title: str, subtitle: str | None = None, emoji: str = "📊"):
     """A simple header block you can use atop the dashboard."""
     st.markdown(f"""
     <div style="
-      background: linear-gradient(135deg, rgba(59,130,246,.12), rgba(59,130,246,.03));
+      background: linear-gradient(135deg, rgba(59,130,246,.10), rgba(129,140,248,.05));
       border: 1px solid rgba(59,130,246,.18);
       border-radius: var(--radius);
       padding: 18px 18px 16px 18px;
