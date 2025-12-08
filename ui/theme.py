@@ -62,30 +62,39 @@ def apply_theme(
       }}
 
       /* Buttons */
-      .stButton > button {{
+      .stButton > button,
+      div[data-testid="baseButton-secondary"] > button,
+      div[data-testid="baseButton-primary"] > button {
         border-radius: var(--radius);
         padding: 0.6rem 1.05rem;
         font-weight: 600;
-        border: 1px solid {border_color};
-        background: {surface_bg};
-        color: #0f172a;
+        border: 2px solid #000000 !important;   /* stronger, visible border */
+        background: {surface_bg} !important;
+        color: #000000 !important;
         transition: all .18s ease;
-        box-shadow: 0 10px 25px rgba(15,23,42,.06);
-      }}
-      .stButton > button:hover {{
+        box-shadow: 0 4px 10px rgba(15,23,42,.10);
+      }
+
+      .stButton > button:hover,
+      div[data-testid="baseButton-secondary"] > button:hover,
+      div[data-testid="baseButton-primary"] > button:hover {
         transform: translateY(-1px);
-        box-shadow: 0 18px 35px rgba(15,23,42,.12);
-      }}
-      .stButton > button:focus {{
+        box-shadow: 0 8px 20px rgba(15,23,42,.16);
+      }
+
+      .stButton > button:focus,
+      div[data-testid="baseButton-secondary"] > button:focus,
+      div[data-testid="baseButton-primary"] > button:focus {
         outline: none;
         box-shadow: 0 0 0 3px {input_focus};
-      }}
+      }
 
-      .stButton > button[kind="primary"] {{
-        background: linear-gradient(135deg, var(--brand), #6366f1) !important;
-        color: white !important;
-        border: none !important;
-      }}
+      /* Primary (filled) style */
+      div[data-testid="baseButton-primary"] > button {
+        background: {brand} !important;
+        color: #ffffff !important;
+        border-color: {brand} !important;
+      }
 
       /* Inputs (clear borders + visible focus) */
       .stTextInput > div > div > input,
