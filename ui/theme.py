@@ -13,7 +13,7 @@ def apply_theme(
     # Fixed light mode palette
     page_bg = "#f3f4f6"          # light gray background
     surface_bg = "#ffffff"       # cards / panels / sidebar
-    subtle_bg = "#17522a"        # soft blue for callouts / hovers
+    subtle_bg = "#cdd1ce"        # soft blue for callouts / hovers
     border_color = "rgba(15,23,42,.12)"   # light border
     muted_color = "#393e45"      # gray-600 for labels / muted text
     input_bg = "#ffffff"         # white inputs
