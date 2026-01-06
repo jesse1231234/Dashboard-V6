@@ -418,29 +418,30 @@ if st.session_state.get("results"):
         aoai_endpoint = st.secrets.get("AZURE_OPENAI_ENDPOINT", os.getenv("AZURE_OPENAI_ENDPOINT", ""))
 
             # ---- CHECK SECRETS FOR FOUNDY / OPENAI CLIENT ----
-    oai_key = st.secrets.get("AZURE_OPENAI_API_KEY", os.getenv("AZURE_OPENAI_API_KEYY", ""))
-    oai_base_url = st.secrets.get("AZURE_OPENAI_ENDPOINT", os.getenv("AZURE_OPENAI_ENDPOINT", ""))
+            oai_key = st.secrets.get("AZURE_OPENAI_API_KEY", os.getenv("AZURE_OPENAI_API_KEYY", ""))
+            oai_base_url = st.secrets.get("AZURE_OPENAI_ENDPOINT", os.getenv("AZURE_OPENAI_ENDPOINT", ""))
 
-    if not oai_key or not oai_base_url:
-        st.warning(
-            "Add AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_API_KEY to Streamlit secrets "
-            "to enable AI analysis."
-        )
-    else:
-        if st.button("Generate analysis"):
-            with st.spinner("Analyzing your dashboard data..."):
-                try:
-                    text = generate_analysis(
-                        kpis=kpis,
-                        echo_module_df=echo_tables.module_table if echo_tables else None,
-                        gradebook_module_df=gb_tables.module_assignment_metrics_df if gb_tables else None,
-                        gradebook_summary_df=gb_tables.gradebook_summary_df if gb_tables else None,
-                        # model param can be None; generate_analysis will use OPENAI_MODEL from secrets
-                        model=None,
-                        temperature=temperature,
-                    )
-                    st.markdown(text)
-                except Exception as e:
-                    st.error(f"AI analysis failed: {e}")
+            if not oai_key or not oai_base_url:
+                st.warning(
+                    "Add AZURE_OPENAI_ENDPOINT and AZURE_OPENAI_API_KEY to Streamlit secrets "
+                    "to enable AI analysis."
+                )
+            else:
+                if st.button("Generate analysis"):
+                    with st.spinner("Analyzing your dashboard data..."):
+                        try:
+                            text = generate_analysis(
+                                kpis=kpis,
+                                echo_module_df=echo_tables.module_table if echo_tables else None,
+                                gradebook_module_df=gb_tables.module_assignment_metrics_df if gb_tables else None,
+                                gradebook_summary_df=gb_tables.gradebook_summary_df if gb_tables else None,
+                                # model param can be None; generate_analysis will use OPENAI_MODEL from secrets
+                                model=None,
+                                temperature=temperature,
+                            )
+                            st.markdown(text)
+                        except Exception as e:
+                            st.error(f"AI analysis failed: {e}")
+
 
 
